@@ -36,18 +36,18 @@ app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
 const validateListing = (req, res, next) =>{
-    let {error} = listingSchema.validate(req.body);
+    // let {error} = listingSchema.validate(req.body);
     
-    if(error){
-        let errMsg = error.details.map((el) => el.message).join(",");
-        throw new ExpressError(400, errMsg);
-    }else{
+    // if(error){
+    //     let errMsg = error.details.map((el) => el.message).join(",");
+    //     throw new ExpressError(400, errMsg);
+    // }else{
         next();
-    }
+    // }
 }
 
 //index
-app.get("/", wrapAsync (async (req,res)=>{
+app.get("/listings", wrapAsync (async (req,res)=>{
     const allListing = await Listing.find({});
     res.render("./listings/show.ejs", {allListing});
 }));
@@ -61,7 +61,7 @@ app.get("/listings/new",(req,res)=>{
 //create 
 app.post("/listings/new", validateListing, wrapAsync (async(req,res)=>{
     
-    const newListing = new Listing(req.body.listing);
+    const newListing = new Listing(req.body);
     await newListing.save();
     res.redirect("/listings");
 }));
