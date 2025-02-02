@@ -46,6 +46,12 @@ const validateListing = (req, res, next) =>{
     // }
 }
 
+//root route
+app.get("/", wrapAsync (async (req,res)=>{
+    const allListing = await Listing.find({});
+    res.render("./listings/show.ejs", {allListing});
+}));
+
 //index
 app.get("/listings", wrapAsync (async (req,res)=>{
     const allListing = await Listing.find({});
